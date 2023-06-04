@@ -2,13 +2,12 @@
 
 module.exports = {
   content: [
-  // If using the src directory, add:
-  "./src/**/*.{js,ts,jsx,tsx,mdx}",
-  "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}", // Tremor module
-  
+    // If using the src directory, add:
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}", // Tremor module
   ],
   theme: {
-  extend: {},
+    extend: {},
   },
   plugins: [],
-  }
+};
