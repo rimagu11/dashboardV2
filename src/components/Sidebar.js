@@ -16,8 +16,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { FaUserCog } from 'react-icons/fa';
-import { FaServer } from 'react-icons/fa';
+import { FaUserCog } from "react-icons/fa";
+import { FaServer } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
 import Dashbody from "./Dashbody";
 
 const drawerWidth = 240;
@@ -87,7 +88,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Sidebar() {
+export default function Sidebar({children}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -149,19 +150,43 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <FaServer/> : <FaUserCog/>}
+                  {index % 2 === 0 ? <FaServer /> : <FaUserCog />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
+
         <Divider />
-       
+
+        <List>
+          <ListItem key="logout" disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+                <ListItemIcon
+                sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                    <FiLogOut/>
+
+                </ListItemIcon>
+                <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }}/>
+            </ListItemButton>
+          </ListItem>
+        </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Dashbody/>
+        {children}
       </Box>
     </Box>
   );
