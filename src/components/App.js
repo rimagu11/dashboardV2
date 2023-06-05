@@ -5,12 +5,12 @@ import Dashboard from "../pages/Dashboard";
 import Serverroom from "../pages/Serverroom/Serverroom";
 import Manageusers from "../pages/Manageusers";
 import Register from "../pages/Register";
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
 
-      <Register/>
+      <Manageusers/>
   );
 }
 

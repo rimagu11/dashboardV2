@@ -20,6 +20,7 @@ import { FaUserCog } from "react-icons/fa";
 import { FaServer } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import Dashbody from "./Dashbody";
+import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -99,6 +100,23 @@ export default function Sidebar({children}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const menuItem=[
+    {
+        path:"/",
+        name:"Dashboard",
+
+    },
+    {
+        path:"/serverroom",
+        name:"Serverroom",
+
+    },
+    {
+        path:"/manageusers",
+        name:"Manageusers",
+
+    }
+]
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -134,7 +152,8 @@ export default function Sidebar({children}) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Server room", "Manage users"].map((text, index) => (
+          {menuItem.map((text, index) => (
+            <NavLink className="link" activeclassName="active">
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
@@ -155,6 +174,7 @@ export default function Sidebar({children}) {
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
+             </NavLink>
           ))}
         </List>
 

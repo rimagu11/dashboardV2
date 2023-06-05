@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+
+
 export default function Loginpage() {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,7 +19,7 @@ export default function Loginpage() {
       password: data.get("password"),
     });
   };
-
+  
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -57,6 +59,7 @@ export default function Loginpage() {
             label="Remember me"
           />
           <Button
+           
             type="submit"
             fullWidth
             variant="contained"
@@ -64,18 +67,7 @@ export default function Loginpage() {
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+         
         </Box>
       </Box>
     </Container>
