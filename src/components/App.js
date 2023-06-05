@@ -4,12 +4,13 @@ import Loginpage from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Serverroom from "../pages/Serverroom/Serverroom";
 import Manageusers from "../pages/Manageusers";
+import Register from "../pages/Register";
+
 
 function App() {
   return (
 
-     <Manageusers/>
-
+      <Register/>
   );
 }
 
