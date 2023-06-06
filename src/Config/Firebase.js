@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, child, get } from "firebase/database";
+import { getAuth } from "firebase/auth";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyD4R4Uq89Qc4fWOGnRxMw-lTfHf_8TMVNU",
@@ -10,8 +12,9 @@ const firebaseConfig = {
   messagingSenderId: "385983907985",
   appId: "1:385983907985:web:f65ef5f00794752f0bd730",
 };
-
-const app = initializeApp(firebaseConfig);
+export default firebaseConfig;
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 
 function fetchData(link) {
   const dbRef = ref(getDatabase());

@@ -7,18 +7,55 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import firebaseConfig from "../Config/Firebase";
+import { useNavigate } from "react-router-dom";
+import { useQuery} from "@tanstack/react-query";
+import { useState } from "react";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import { CircularProgress } from "@mui/material";
 
+firebaseConfig.initializeApp(firebaseConfig);
 
+const SendUIDAndNavigate = (Navigate) => {
+  const sendUID = useQuery({
+    queryKey: ["uid"],
+    queryFn: () => firebase.auth().currentUser,
+  });
+  if (sendUID.isLoading) return <CircularProgress />
+  if (sendUID.isError) return 
+  <pre>{JSON.stringify(sendUID.error)}</pre>
+  
+  let uid =sendUID.data;
 
-export default function Loginpage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    Navigate("/dashboard", {uid})
+
+}
+
+function Loginpage() {
+  const Navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        console.log("User signed in:", userCredential.user);
+        Navigate("/dashboard", {state:{uid: firebase.auth().currentUser.uid}});
+      })
+      .catch((error) => {
+        setErrorMessage("Wrong Password or email!");
+      });
   };
+
+
   
   return (
     <Container component="main" maxWidth="xs">
@@ -33,7 +70,7 @@ export default function Loginpage() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSignIn} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -73,3 +110,4 @@ export default function Loginpage() {
     </Container>
   );
 }
+export default Loginpage;
