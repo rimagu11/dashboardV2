@@ -1,6 +1,6 @@
 import * as React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import Sidebar from "../components/Sidebar";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import {
   Card,
@@ -74,77 +74,82 @@ const userdata = [
 
 function Manageusers() {
   return (
-    <>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Stack spacing={1}>
-                <Typography variant="h4">Users</Typography>
+    <Sidebar>
+      <>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            py: 8,
+          }}
+        >
+          <Container maxWidth="xl">
+            <Stack spacing={3}>
+              <Stack direction="row" justifyContent="space-between" spacing={4}>
+                <Stack spacing={1}>
+                  <Typography variant="h4">Users</Typography>
+                </Stack>
+                <div>
+                  <Button
+                    startIcon={
+                      <SvgIcon fontSize="small">
+                        <PlusIcon />
+                      </SvgIcon>
+                    }
+                    variant="contained"
+                  >
+                    Add user
+                  </Button>
+                </div>
               </Stack>
-              <div>
-                <Button
-                  startIcon={
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  }
-                  variant="contained"
-                >
-                  Add user
-                </Button>
-              </div>
-            </Stack>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Card>
-                <Title>List of users</Title>
-                <Table className="mt-5">
-                  <TableHead>
-                    <TableRow>
-                      <TableHeaderCell>Full Name</TableHeaderCell>
-                      <TableHeaderCell>Matricule</TableHeaderCell>
-                      <TableHeaderCell>Email Address</TableHeaderCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {userdata.map((item) => (
-                      <TableRow key={item.name}>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell>
-                          <Text>{item.Role}</Text>
-                        </TableCell>
-                        <TableCell>
-                          <Text>{item.departement}</Text>
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="outlined" startIcon={<DeleteIcon />}>
-                            Delete
-                          </Button>
-                        </TableCell>
-
-                        <TableCell></TableCell>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Card>
+                  <Title>List of users</Title>
+                  <Table className="mt-5">
+                    <TableHead>
+                      <TableRow>
+                        <TableHeaderCell>Full Name</TableHeaderCell>
+                        <TableHeaderCell>Matricule</TableHeaderCell>
+                        <TableHeaderCell>Email Address</TableHeaderCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Card>
-            </Box>
-          </Stack>
-        </Container>
-      </Box>
-    </>
+                    </TableHead>
+                    <TableBody>
+                      {userdata.map((item) => (
+                        <TableRow key={item.name}>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell>
+                            <Text>{item.Role}</Text>
+                          </TableCell>
+                          <TableCell>
+                            <Text>{item.departement}</Text>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="outlined"
+                              startIcon={<DeleteIcon />}
+                            >
+                              Delete
+                            </Button>
+                          </TableCell>
+
+                          <TableCell></TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Card>
+              </Box>
+            </Stack>
+          </Container>
+        </Box>
+      </>
+    </Sidebar>
   );
 }
 

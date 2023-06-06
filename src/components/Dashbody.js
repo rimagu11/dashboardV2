@@ -6,6 +6,10 @@ import { CiTempHigh } from "react-icons/ci";
 import { WiHumidity } from "react-icons/wi";
 import { GiGasStove } from "react-icons/gi";
 import { AiTwotoneSound } from "react-icons/ai";
+import TemperatureQuery from "./TemperatureQuery";
+import HumidityQuery from "./HumidityQuery";
+import SoundQuery from "./SoundQuery";
+import GazQuery from "./GazQuery";
 
 function Dashbody() {
   return (
@@ -36,9 +40,7 @@ function Dashbody() {
                 {" "}
                 <center>Temperature </center>
               </Text>
-              <Metric>
-                <center>°C </center>
-              </Metric>
+              <TemperatureQuery/>
             </Card>
             <Card className="col-start-4 col-span-1 h-40">
               <center>
@@ -58,10 +60,7 @@ function Dashbody() {
                 {" "}
                 <center>Humidity </center>{" "}
               </Text>
-              <Metric>
-                {" "}
-                <center>% </center>{" "}
-              </Metric>
+              <HumidityQuery/>
             </Card>
             <Card className="col-start-5 col-span-1 h-40">
               <center>
@@ -80,9 +79,7 @@ function Dashbody() {
               <Text>
                 <center>Gaz</center>
               </Text>
-              <Metric>
-                <center></center>
-              </Metric>
+              <GazQuery/>
             </Card>
             <Card className="col-start-6 col-span-1 h-40">
               <center>
@@ -101,9 +98,7 @@ function Dashbody() {
               <Text>
                 <center>Sound</center>{" "}
               </Text>
-              <Metric>
-                <center></center>
-              </Metric>
+              <SoundQuery/>
             </Card>
           </div>
           <div className="grid grid-rows-1 grid-cols-8 gap-2 mt-6 ">

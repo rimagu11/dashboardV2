@@ -20,7 +20,7 @@ import { FaUserCog } from "react-icons/fa";
 import { FaServer } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import Dashbody from "./Dashbody";
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -89,7 +89,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Sidebar({children}) {
+export default function Sidebar({ children }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -100,23 +100,10 @@ export default function Sidebar({children}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const menuItem=[
-    {
-        path:"/",
-        name:"Dashboard",
-
-    },
-    {
-        path:"/serverroom",
-        name:"Serverroom",
-
-    },
-    {
-        path:"/manageusers",
-        name:"Manageusers",
-
-    }
-]
+  const navigate = useNavigate();
+  const handleOnClick = (link) =>{
+    navigate(link);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -152,54 +139,77 @@ export default function Sidebar({children}) {
         </DrawerHeader>
         <Divider />
         <List>
-          {menuItem.map((text, index) => (
-            <NavLink className="link" activeclassName="active">
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <FaServer /> : <FaUserCog />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-             </NavLink>
-          ))}
-        </List>
-
-        <Divider />
-
-        <List>
-          <ListItem key="logout" disablePadding sx={{ display: "block" }}>
-            <ListItemButton
+          <ListItem key="Serverroom">
+            <ListItemButton onClick={()=>(navigate('/Serverroom'))}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? "initial" : "center",
                 px: 2.5,
               }}
             >
-                <ListItemIcon
+              <ListItemIcon
                 sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                    <FiLogOut/>
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <FaServer />
+              </ListItemIcon>
 
-                </ListItemIcon>
-                <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }}/>
+              <ListItemText
+                primary="Serverroom"
+                sx={{ opacity: open ? 1 : 0 }}
+              ></ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem key="Manage users">
+            <ListItemButton onClick={()=>(navigate('/manageusers'))}
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              ><FaUserCog />
+
+              </ListItemIcon>
+              
+              <ListItemText
+                primary="Manage users"
+                sx={{ opacity: open ? 1 : 0 }}
+              ></ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <Divider />
+
+        <List>
+          <ListItem key="logout" disablePadding sx={{ display: "block" }}>
+            <ListItemButton onClick={()=>(navigate('/login'))}
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <FiLogOut />
+              </ListItemIcon>
+              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
         </List>
