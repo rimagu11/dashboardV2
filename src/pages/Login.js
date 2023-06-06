@@ -1,44 +1,44 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import firebaseConfig from "../Config/Firebase";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery} from "@tanstack/react-query";
-import { useState } from "react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useQuery } from "react-query";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
-import { CircularProgress } from "@mui/material";
 
-firebaseConfig.initializeApp(firebaseConfig);
+import firebaseConfig from "../Config/Firebase";
+
+firebase.initializeApp(firebaseConfig);
 
 const SendUIDAndNavigate = (Navigate) => {
   const sendUID = useQuery({
     queryKey: ["uid"],
-    queryFn: () => firebase.auth().currentUser,
+    queryFn: () => firebase.auth().currentUser.uid,
   });
-  if (sendUID.isLoading) return <CircularProgress />
-  if (sendUID.isError) return 
-  <pre>{JSON.stringify(sendUID.error)}</pre>
-  
-  let uid =sendUID.data;
 
-    Navigate("/dashboard", {uid})
+  if (sendUID.isLoading) return <CircularProgress />;
+  if (sendUID.isError) return <pre>{JSON.stringify(sendUID.error)}</pre>;
 
-}
+  let uid = sendUID.data;
 
-function Loginpage() {
+  Navigate("/dashboard", { uid });
+};
+
+function LoginPage() {
   const Navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  
   const handleSignIn = (e) => {
     e.preventDefault();
     setErrorMessage("");
@@ -48,25 +48,16 @@ function Loginpage() {
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         console.log("User signed in:", userCredential.user);
-        Navigate("/dashboard", {state:{uid: firebase.auth().currentUser.uid}});
+        Navigate("/dashboard", { state: { uid: firebase.auth().currentUser.uid } });
       })
       .catch((error) => {
         setErrorMessage("Wrong Password or email!");
       });
   };
 
-
-  
   return (
     <Container component="main" maxWidth="xs">
-      <Box
-        sx={{  
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
@@ -80,6 +71,8 @@ function Loginpage() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={email} // Added value prop to bind the email state
+            onChange={(e) => setEmail(e.target.value)} // Added onChange handler to update the email state
           />
           <TextField
             margin="normal"
@@ -90,24 +83,16 @@ function Loginpage() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password} // Added value prop to bind the password state
+            onChange={(e) => setPassword(e.target.value)} // Added onChange handler to update the password state
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-           
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
-         
         </Box>
       </Box>
     </Container>
   );
 }
-export default Loginpage;
+
+export default LoginPage;
