@@ -23,56 +23,38 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "../Config/Firebase";
+import { CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const userdata = [
-  {
-    name: "Viola Amherd",
-    Role: "Federal Councillor",
-    departement:
-      "The Federal Department of Defence, Civil Protection and Sport (DDPS)",
-    status: "active",
-  },
-  {
-    name: "Simonetta Sommaruga",
-    Role: "Federal Councillor",
-    departement:
-      "The Federal Department of the Environment, Transport, Energy and Communications (DETEC)",
-    status: "active",
-  },
-  {
-    name: "Alain Berset",
-    Role: "Federal Councillor",
-    departement: "The Federal Department of Home Affairs (FDHA)",
-    status: "active",
-  },
-  {
-    name: "Ignazio Cassis",
-    Role: "Federal Councillor",
-    departement: "The Federal Department of Foreign Affairs (FDFA)",
-    status: "active",
-  },
-  {
-    name: "Ueli Maurer",
-    Role: "Federal Councillor",
-    departement: "The Federal Department of Finance (FDF)",
-    status: "active",
-  },
-  {
-    name: "Guy Parmelin",
-    Role: "Federal Councillor",
-    departement:
-      "The Federal Department of Economic Affairs, Education and Research (EAER)",
-    status: "active",
-  },
-  {
-    name: "Karin Keller-Sutter",
-    Role: "Federal Councillor",
-    departement: "The Federal Department of Justice and Police (FDJP)",
-    status: "active",
-  },
-];
 
-function Manageusers() {
+export default function ManageUsers() {
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["display users data"],
+    queryFn: () => fetchData("Users/"),
+  });
+  const navigate = useNavigate();
+  const handleOnClick = (link) =>{
+    navigate(link);
+  };
+  if (isLoading) return <CircularProgress />;
+
+  if (error) return "An error has occurred: " + error.message;
+
+  const createData = (FullName, Email, Matricule) => {
+    return { FullName, Email, Matricule };
+  }
+
+  let rows = Object.values(data).map(user =>{
+      return (createData(
+      user.FullName,
+      user.Matricule,
+      user.email,
+      [<Button variant="contained"color="error">Delete</Button> ]
+    ))
+  })
+  console.log(rows);
   return (
     <Sidebar>
       <>
@@ -91,6 +73,7 @@ function Manageusers() {
                 </Stack>
                 <div>
                   <Button
+                  onClick={()=>(navigate('/Register'))}
                     startIcon={
                       <SvgIcon fontSize="small">
                         <PlusIcon />
@@ -120,14 +103,14 @@ function Manageusers() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {userdata.map((item) => (
-                        <TableRow key={item.name}>
-                          <TableCell>{item.name}</TableCell>
+                      {rows.map((row) => (
+                        <TableRow key={row.FullName}>
+                          <TableCell>{row.FullName}</TableCell>
                           <TableCell>
-                            <Text>{item.Role}</Text>
+                            <Text>{row.Email}</Text>
                           </TableCell>
                           <TableCell>
-                            <Text>{item.departement}</Text>
+                            <Text>{row.Matricule}</Text>
                           </TableCell>
                           <TableCell>
                             <Button
@@ -153,4 +136,4 @@ function Manageusers() {
   );
 }
 
-export default Manageusers;
+

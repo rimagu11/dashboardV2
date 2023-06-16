@@ -3,20 +3,11 @@ import { fetchData } from "../Config/Firebase";
 import {  Metric } from "@tremor/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export default function TemperatureQuery() {
-  const queryClient = useQueryClient();
-  const { isLoading, error, data } = useQuery({
-    queryKey:["temperature"],
-    queryFn:fetchData("/Rooms/LTN1/Temperature"),
-  });
-
-  if (isLoading) return <CircularProgress />;
-
-  if (error) return "";
-
+export default function TemperatureQuery({value}) {
+  
   return (
     <Metric>
-      <center>{data}°C </center>
+      <center>{value}°C </center>
     </Metric>
   );
 }

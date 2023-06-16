@@ -1,5 +1,5 @@
 import { Card, Text, Metric, AreaChart, Title } from "@tremor/react";
-import { dataFormatter , chartdata } from "../data/Areachartdata";
+import { dataFormatter, chartdata } from "../data/Areachartdata";
 
 import { Typography, SvgIcon, Avatar } from "@mui/material";
 import { CiTempHigh } from "react-icons/ci";
@@ -10,15 +10,32 @@ import TemperatureQuery from "./TemperatureQuery";
 import HumidityQuery from "./HumidityQuery";
 import SoundQuery from "./SoundQuery";
 import GazQuery from "./GazQuery";
+import { fetchData } from "../Config/Firebase";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
-function Dashbody() {
+function Dashbody({ data }) {
+  const {
+    isLoading,
+    error,
+    data: history,
+  } = useQuery({
+    queryKey: ["history"],
+    queryFn: () =>
+      fetchData("/History/").then((res) => {
+        return Object.values(res[data.RoomName]);
+      }),
+  });
+
+  !isLoading && console.log("history", Object.values(history[0]));
+
   return (
     <div className="h-full basis-5/6 bg-blue-100 text-center">
       <div className="overflow-y-auto h-full basis-5/6">
         <div className="flex flex-col">
           <div className="mt-10 ml-20">
             <Typography variant="h4" className="text-left mt-10  ">
-              LTN 1 
+              {data?.RoomName}
             </Typography>
           </div>
           <div className="grid grid-rows-1 grid-cols-8 gap-2 mt-14 overflow-y-auto">
@@ -40,7 +57,7 @@ function Dashbody() {
                 {" "}
                 <center>Temperature </center>
               </Text>
-              <TemperatureQuery/>
+              <TemperatureQuery value={data.Temperature} />
             </Card>
             <Card className="col-start-4 col-span-1 h-40">
               <center>
@@ -60,7 +77,7 @@ function Dashbody() {
                 {" "}
                 <center>Humidity </center>{" "}
               </Text>
-              <HumidityQuery/>
+              <HumidityQuery value={data.Humidity} />
             </Card>
             <Card className="col-start-5 col-span-1 h-40">
               <center>
@@ -79,7 +96,7 @@ function Dashbody() {
               <Text>
                 <center>Gaz</center>
               </Text>
-              <GazQuery/>
+              <GazQuery value={data.Gaz} />
             </Card>
             <Card className="col-start-6 col-span-1 h-40">
               <center>
@@ -98,21 +115,23 @@ function Dashbody() {
               <Text>
                 <center>Sound</center>{" "}
               </Text>
-              <SoundQuery/>
+              <SoundQuery value={data.Sound} />
             </Card>
           </div>
           <div className="grid grid-rows-1 grid-cols-8 gap-2 mt-6 ">
             <Card className="col-start-3 col-end-7">
               <Title>Temperature History</Title>
               <div className="h-72 mt-4">
-                <AreaChart
-                  data={chartdata}
-                  index="date"
-                  categories={["Temperature"]}
-                  colors={["cyan"]}
-                  valueFormatter={dataFormatter}
-                  yAxisWidth={40}
-                />
+                {!isLoading && (
+                  <AreaChart
+                    data={chartdata}
+                    index="date"
+                    categories={["Temperature"]}
+                    colors={["cyan"]}
+                    valueFormatter={dataFormatter}
+                    yAxisWidth={40}
+                  />
+                )}
               </div>
             </Card>
             <Card className="col-start-3 col-end-7">

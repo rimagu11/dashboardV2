@@ -5,22 +5,11 @@ import { fetchData } from "../Config/Firebase";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 
-export default function HumidityQuery() {
-  
-  const queryClient = useQueryClient();
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["humidity"],
-    queryFn:fetchData("/Rooms/LTN1/Humidity"),
-  });
-
-  if (isLoading) return <CircularProgress/>;
-
-  if (error) return "";
-
+export default function HumidityQuery({value}) {
   return (
     <Metric>
      
-      <center>{data}% </center>
+      <center>{value}% </center>
     </Metric>
   );
 }

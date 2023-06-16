@@ -4,20 +4,12 @@ import { Metric } from "@tremor/react";
 import { fetchData } from "../Config/Firebase";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export default function GazQuery() {
-  const queryClient = useQueryClient();
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["gaz"],
-    queryFn: fetchData("/Rooms/LTN1/Gaz"),
-  });
+export default function GazQuery({value}) {
 
-  if (isLoading) return <CircularProgress />;
-
-  if (error) return "";
 
   return (
     <Metric>
-      <center>{data}</center>
+      <center>{value}</center>
     </Metric>
   );
 }
