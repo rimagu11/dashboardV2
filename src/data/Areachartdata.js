@@ -1,4 +1,22 @@
-
+export const formatData = (data, type) => {
+  if (data && Array.isArray(data) && data.length > 0) {
+    if (type === "Temperature") {
+      return data[0].map((history) => {
+        return {
+          date: history.time,
+          Temperature: history.Temperature,
+        };
+      });
+    } else if (type === "Humidity") {
+      return data[0].map((history) => {
+        return {
+          date: history.time,
+          Humidity: history.Humidity,
+        };
+      });
+    }
+  }
+};
 
 const chartdata = [
   {
@@ -34,8 +52,10 @@ const chartdata = [
 ];
 
 const dataFormatter = (number) => {
-  return "$ " + Intl.NumberFormat("us").format(number).toString();
+  return "° " + Intl.NumberFormat("us").format(number).toString();
+};
+const huDataFormatter = (number) => {
+  return "% " + Intl.NumberFormat("us").format(number).toString();
 };
 
-
-export {chartdata, dataFormatter};
+export { chartdata, dataFormatter,huDataFormatter };

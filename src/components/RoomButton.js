@@ -12,7 +12,7 @@ function RoomButton({text}) {
           <Metric>Dashboard of {text}</Metric>
 
           <Button size="xl"
-          onClick={()=>(navigate('/dashboard'))}
+          onClick={()=>(navigate(`/Serverroom/${text}`))}
           >Server room 
           
           </Button>

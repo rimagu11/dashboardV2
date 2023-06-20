@@ -1,5 +1,5 @@
 import { Card, Text, Metric, AreaChart, Title } from "@tremor/react";
-import { dataFormatter, chartdata } from "../data/Areachartdata";
+import { dataFormatter, chartdata, formatData, huDataFormatter } from "../data/Areachartdata";
 
 import { Typography, SvgIcon, Avatar } from "@mui/material";
 import { CiTempHigh } from "react-icons/ci";
@@ -22,12 +22,10 @@ function Dashbody({ data }) {
   } = useQuery({
     queryKey: ["history"],
     queryFn: () =>
-      fetchData("/History/").then((res) => {
-        return Object.values(res[data.RoomName]);
-      }),
+      fetchData(`/Rooms/${data?.RoomName}/History/`).then(res=> Object.values(res))
   });
-
-  !isLoading && console.log("history", Object.values(history[0]));
+console.log(`/Rooms/LTN1/History/`)
+  error && console.log("error",error)
 
   return (
     <div className="h-full basis-5/6 bg-blue-100 text-center">
@@ -96,7 +94,7 @@ function Dashbody({ data }) {
               <Text>
                 <center>Gaz</center>
               </Text>
-              <GazQuery value={data.Gaz} />
+              <GazQuery value={data.Gas} />
             </Card>
             <Card className="col-start-6 col-span-1 h-40">
               <center>
@@ -124,7 +122,7 @@ function Dashbody({ data }) {
               <div className="h-72 mt-4">
                 {!isLoading && (
                   <AreaChart
-                    data={chartdata}
+                    data={formatData(history,'Temperature')}
                     index="date"
                     categories={["Temperature"]}
                     colors={["cyan"]}
@@ -138,41 +136,17 @@ function Dashbody({ data }) {
               <Title>Humidity History</Title>
               <div className="h-72 mt-4">
                 <AreaChart
-                  data={chartdata}
+                  data={formatData(history,'Humidity')}
                   index="date"
                   categories={["Humidity"]}
                   colors={["indigo"]}
-                  valueFormatter={dataFormatter}
+                  valueFormatter={huDataFormatter}
                   yAxisWidth={40}
                 />
               </div>
             </Card>
-            <Card className="col-start-3 col-end-7">
-              <Title>Gaz History</Title>
-              <div className="h-72 mt-4">
-                <AreaChart
-                  data={chartdata}
-                  index="date"
-                  categories={["Gaz"]}
-                  colors={["indigo"]}
-                  valueFormatter={dataFormatter}
-                  yAxisWidth={40}
-                />
-              </div>
-            </Card>
-            <Card className="col-start-3 col-end-7">
-              <Title>Sound History</Title>
-              <div className="h-72 mt-4">
-                <AreaChart
-                  data={chartdata}
-                  index="date"
-                  categories={["Sound"]}
-                  colors={["indigo"]}
-                  valueFormatter={dataFormatter}
-                  yAxisWidth={40}
-                />
-              </div>
-            </Card>
+           
+            
           </div>
         </div>
       </div>

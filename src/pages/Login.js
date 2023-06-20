@@ -37,7 +37,7 @@ function LoginPage() {
   const Navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -48,16 +48,26 @@ function LoginPage() {
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         console.log("User signed in:", userCredential.user);
-        Navigate("/dashboard", { state: { uid: firebase.auth().currentUser.uid } });
+        Navigate("/dashboard", {
+          state: { uid: firebase.auth().currentUser.uid },
+        });
       })
       .catch((error) => {
-        setErrorMessage("Wrong Password or email!");
+        console.log(error);
+        setErrorMessage(error);
       });
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
@@ -86,9 +96,19 @@ function LoginPage() {
             value={password} // Added value prop to bind the password state
             onChange={(e) => setPassword(e.target.value)} // Added onChange handler to update the password state
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             Sign In
           </Button>
+          {errorMessage && errorMessage.code === "auth/wrong-password" ? (
+            <p className="text-sm text-red-600">Please make sure to enter a valid password</p>
+          ) : (
+            <p className="text-sm text-red-600">An error has occured</p>
+          )}
         </Box>
       </Box>
     </Container>

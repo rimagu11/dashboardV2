@@ -4,13 +4,14 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD4R4Uq89Qc4fWOGnRxMw-lTfHf_8TMVNU",
-  authDomain: "leoni-pfe.firebaseapp.com",
-  databaseURL: "https://leoni-pfe-default-rtdb.firebaseio.com",
-  projectId: "leoni-pfe",
-  storageBucket: "leoni-pfe.appspot.com",
-  messagingSenderId: "385983907985",
-  appId: "1:385983907985:web:f65ef5f00794752f0bd730",
+  apiKey: "AIzaSyBl-tVPS8qftUX7X93ROdp7OQ50Km28eAU",
+  authDomain: "leoni-dash.firebaseapp.com",
+  databaseURL: "https://leoni-dash-default-rtdb.firebaseio.com",
+  projectId: "leoni-dash",
+  storageBucket: "leoni-dash.appspot.com",
+  messagingSenderId: "754187840193",
+  appId: "1:754187840193:web:83745de4bd57727e8ac240",
+  measurementId: "G-WZYYSC5GWG",
 };
 export default firebaseConfig;
 export const app = initializeApp(firebaseConfig);
@@ -20,6 +21,7 @@ function fetchData(link) {
   const dbRef = ref(getDatabase());
   return get(child(dbRef, link))
     .then((snapshot) => {
+      console.log("snapshot",snapshot)
       if (snapshot.exists()) {
         return snapshot.val();
       } else {

@@ -9,7 +9,7 @@ export default function GazQuery({value}) {
 
   return (
     <Metric>
-      <center>{value}</center>
+      <center className="text-sm">{value}</center>
     </Metric>
   );
 }
