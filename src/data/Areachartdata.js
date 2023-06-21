@@ -1,21 +1,22 @@
 export const formatData = (data, type) => {
-  if (data && Array.isArray(data) && data.length > 0) {
+  console.log("dataef", data);
     if (type === "Temperature") {
-      return data[0].map((history) => {
+      return data.map((history) => {
         return {
           date: history.time,
           Temperature: history.Temperature,
         };
       });
     } else if (type === "Humidity") {
-      return data[0].map((history) => {
+      return data.map((history) => {
         return {
           date: history.time,
           Humidity: history.Humidity,
         };
       });
     }
-  }
+
+  
 };
 
 const chartdata = [

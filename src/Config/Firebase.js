@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "leoni-dash.appspot.com",
   messagingSenderId: "754187840193",
   appId: "1:754187840193:web:83745de4bd57727e8ac240",
-  measurementId: "G-WZYYSC5GWG",
+  measurementId: "G-WZYYSC5GWG"
 };
 export default firebaseConfig;
 export const app = initializeApp(firebaseConfig);
@@ -21,7 +21,6 @@ function fetchData(link) {
   const dbRef = ref(getDatabase());
   return get(child(dbRef, link))
     .then((snapshot) => {
-      console.log("snapshot",snapshot)
       if (snapshot.exists()) {
         return snapshot.val();
       } else {

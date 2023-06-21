@@ -1,5 +1,10 @@
 import { Card, Text, Metric, AreaChart, Title } from "@tremor/react";
-import { dataFormatter, chartdata, formatData, huDataFormatter } from "../data/Areachartdata";
+import {
+  dataFormatter,
+  chartdata,
+  formatData,
+  huDataFormatter,
+} from "../data/Areachartdata";
 
 import { Typography, SvgIcon, Avatar } from "@mui/material";
 import { CiTempHigh } from "react-icons/ci";
@@ -19,25 +24,30 @@ function Dashbody({ data }) {
     isLoading,
     error,
     data: history,
+    isError,
   } = useQuery({
     queryKey: ["history"],
     queryFn: () =>
-      fetchData(`/Rooms/${data?.RoomName}/History/`).then(res=> Object.values(res))
+      fetchData(`/Rooms/${data?.RoomName}/History/`).then((res) =>
+        Object.values(res)
+      ),
   });
-console.log(`/Rooms/LTN1/History/`)
-  error && console.log("error",error)
+  !isLoading && console.log("history", history);
+  if (isError) {
+    return <div>error</div>;
+  }
 
   return (
-    <div className="h-full basis-5/6 bg-blue-100 text-center">
-      <div className="overflow-y-auto h-full basis-5/6">
+    <div className="h-full text-center bg-blue-100 basis-5/6">
+      <div className="h-full overflow-y-auto basis-5/6">
         <div className="flex flex-col">
           <div className="mt-10 ml-20">
-            <Typography variant="h4" className="text-left mt-10  ">
+            <Typography variant="h4" className="mt-10 text-left ">
               {data?.RoomName}
             </Typography>
           </div>
-          <div className="grid grid-rows-1 grid-cols-8 gap-2 mt-14 overflow-y-auto">
-            <Card className="col-start-3 col-span-1 h-40">
+          <div className="grid grid-cols-8 grid-rows-1 gap-2 overflow-y-auto mt-14">
+            <Card className="h-40 col-span-1 col-start-3">
               <center>
                 <Avatar
                   sx={{
@@ -55,9 +65,9 @@ console.log(`/Rooms/LTN1/History/`)
                 {" "}
                 <center>Temperature </center>
               </Text>
-              <TemperatureQuery value={data.Temperature} />
+              <TemperatureQuery value={data?.Temperature} />
             </Card>
-            <Card className="col-start-4 col-span-1 h-40">
+            <Card className="h-40 col-span-1 col-start-4">
               <center>
                 <Avatar
                   sx={{
@@ -75,9 +85,9 @@ console.log(`/Rooms/LTN1/History/`)
                 {" "}
                 <center>Humidity </center>{" "}
               </Text>
-              <HumidityQuery value={data.Humidity} />
+              <HumidityQuery value={data?.Humidity} />
             </Card>
-            <Card className="col-start-5 col-span-1 h-40">
+            <Card className="h-40 col-span-1 col-start-5">
               <center>
                 <Avatar
                   sx={{
@@ -94,9 +104,9 @@ console.log(`/Rooms/LTN1/History/`)
               <Text>
                 <center>Gaz</center>
               </Text>
-              <GazQuery value={data.Gas} />
+              <GazQuery value={data?.Gas} />
             </Card>
-            <Card className="col-start-6 col-span-1 h-40">
+            <Card className="h-40 col-span-1 col-start-6">
               <center>
                 <Avatar
                   sx={{
@@ -113,16 +123,16 @@ console.log(`/Rooms/LTN1/History/`)
               <Text>
                 <center>Sound</center>{" "}
               </Text>
-              <SoundQuery value={data.Sound} />
+              <SoundQuery value={data?.Sound} />
             </Card>
           </div>
-          <div className="grid grid-rows-1 grid-cols-8 gap-2 mt-6 ">
+          <div className="grid grid-cols-8 grid-rows-1 gap-2 mt-6 ">
             <Card className="col-start-3 col-end-7">
               <Title>Temperature History</Title>
-              <div className="h-72 mt-4">
+              <div className="mt-4 h-72">
                 {!isLoading && (
                   <AreaChart
-                    data={formatData(history,'Temperature')}
+                    data={formatData(Object.values(history[0]), "Temperature")}
                     index="date"
                     categories={["Temperature"]}
                     colors={["cyan"]}
@@ -134,19 +144,19 @@ console.log(`/Rooms/LTN1/History/`)
             </Card>
             <Card className="col-start-3 col-end-7">
               <Title>Humidity History</Title>
-              <div className="h-72 mt-4">
-                <AreaChart
-                  data={formatData(history,'Humidity')}
-                  index="date"
-                  categories={["Humidity"]}
-                  colors={["indigo"]}
-                  valueFormatter={huDataFormatter}
-                  yAxisWidth={40}
-                />
+              <div className="mt-4 h-72">
+                {!isLoading && (
+                  <AreaChart
+                    data={formatData(Object.values(history[0]), "Humidity")}
+                    index="date"
+                    categories={["Humidity"]}
+                    colors={["indigo"]}
+                    valueFormatter={huDataFormatter}
+                    yAxisWidth={40}
+                  />
+                )}
               </div>
             </Card>
-           
-            
           </div>
         </div>
       </div>
