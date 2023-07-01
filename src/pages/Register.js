@@ -37,7 +37,7 @@ function SignUp() {
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
   const [matricule, setMatricule] = useState("");
   const [open, setOpen] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleClick = () => {
     setOpen(true);
@@ -179,6 +179,11 @@ function SignUp() {
             >
               Return
             </Button>
+            {errorMessage && errorMessage.code === " auth/email-already-exists	" ? (
+            <p className="text-sm text-red-600">Please make sure to enter a valid password</p>
+          ) : (
+            <p className="text-sm text-red-600">An error has occured</p>
+          )}
           </Box>
         </Box>
       </Container>

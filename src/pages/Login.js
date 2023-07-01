@@ -104,11 +104,11 @@ function LoginPage() {
           >
             Sign In
           </Button>
-          {errorMessage && errorMessage.code === "auth/wrong-password" ? (
+          { errorMessage && errorMessage.code === "auth/wrong-password" ? (
             <p className="text-sm text-red-600">Please make sure to enter a valid password</p>
-          ) : (
-            <p className="text-sm text-red-600">An error has occured</p>
-          )}
+          ) :errorMessage && errorMessage.code === " auth/invalid-email	" ? (
+            <p className="text-sm text-red-600">Please make sure to enter a valid mail</p>
+          ) : null }
         </Box>
       </Box>
     </Container>

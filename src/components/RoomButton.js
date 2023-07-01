@@ -13,7 +13,7 @@ function RoomButton({text}) {
 
           <Button size="xl"
           onClick={()=>(navigate(`/Serverroom/${text}`))}
-          >Server room 
+          >Enter
           
           </Button>
         </Flex>

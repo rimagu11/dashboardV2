@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function SoundQuery({ value }) {
   return (
     <Metric>
-      <center className="text-black">{value}</center>
+      <center className="text-sm">{value}</center>
     </Metric>
   );
 }
