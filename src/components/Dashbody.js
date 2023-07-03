@@ -32,7 +32,7 @@ function Dashbody({ data }) {
         Object.values(res)
       ),
   });
-  !isLoading && console.log("history", history);
+  !isLoading && console.log("history", Object.values(history[0]));
   if (isError) {
     return <div>error</div>;
   }

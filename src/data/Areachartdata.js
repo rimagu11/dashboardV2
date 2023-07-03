@@ -1,7 +1,8 @@
 export const formatData = (data, type) => {
+  console.log("data to format ", data)
 if(type==="Temperature")
   {
-    return Object.values(data[0]).map((history) => {
+    return data.map((history) => {
       return {
         date: history.time,
         Temperature: history.Temperature,
@@ -9,7 +10,7 @@ if(type==="Temperature")
       };
     });
   }else{
-    return Object.values(data[0]).map((history) => {
+    return data.map((history) => {
       return {
         date: history.time,
         Humidity: history.Humidity,
