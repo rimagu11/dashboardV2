@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get, set, remove } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
 
@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "leoni-dash.appspot.com",
   messagingSenderId: "754187840193",
   appId: "1:754187840193:web:83745de4bd57727e8ac240",
-  measurementId: "G-WZYYSC5GWG"
+  measurementId: "G-WZYYSC5GWG",
 };
 export default firebaseConfig;
 export const app = initializeApp(firebaseConfig);
@@ -47,9 +47,9 @@ export function createAccount(email, password, fullname, matricule) {
       .then((userCredential) => {
         const user = userCredential.user;
         const userData = {
-          FullName: fullname,
-          Matricule: matricule,
-          Password: password,
+          name: fullname,
+          matricule: matricule,
+          password: password,
           email: email,
         };
         return set(ref(db, `Users/${user.uid}`), userData)
@@ -72,4 +72,20 @@ export function createAccount(email, password, fullname, matricule) {
     //   return ["Existing email", false];
     // }
   });
+}
+export async function deleteAccount(userId) {
+  console.log(userId)
+  const db = getDatabase();
+  const userRef = ref(db, `Users/${userId}`);
+  console.log(userRef)
+  const deleteUser = await remove(userRef)
+    .then((res) => {
+      console.log("res", res);
+      console.log("User account deleted successfully");
+    })
+    .catch((error) => {
+      console.error("Error deleting user account:", error);
+      return "errror";
+    });
+  return deleteUser;
 }

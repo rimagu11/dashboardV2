@@ -1,22 +1,22 @@
 export const formatData = (data, type) => {
-  console.log("dataef", data);
-    if (type === "Temperature") {
-      return data.map((history) => {
-        return {
-          date: history.time,
-          Temperature: history.Temperature,
-        };
-      });
-    } else if (type === "Humidity") {
-      return data.map((history) => {
-        return {
-          date: history.time,
-          Humidity: history.Humidity,
-        };
-      });
-    }
-
+if(type==="Temperature")
+  {
+    return Object.values(data[0]).map((history) => {
+      return {
+        date: history.time,
+        Temperature: history.Temperature,
   
+      };
+    });
+  }else{
+    return Object.values(data[0]).map((history) => {
+      return {
+        date: history.time,
+        Humidity: history.Humidity,
+  
+      };
+    });
+  }
 };
 
 const chartdata = [

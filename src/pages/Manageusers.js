@@ -24,36 +24,41 @@ import {
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { fetchData } from "../Config/Firebase";
+import { fetchData, deleteAccount } from "../Config/Firebase";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
 
 export default function ManageUsers() {
   const { isLoading, error, data } = useQuery({
     queryKey: ["display users data"],
-    queryFn: () => fetchData("Users/"),
+    queryFn: () => fetchData("Users/").then((res) => Object.entries(res)),
   });
   const navigate = useNavigate();
-  const handleOnClick = (link) =>{
+  
+  const handleOnClick = (link) => {
     navigate(link);
   };
   if (isLoading) return <CircularProgress />;
 
   if (error) return "An error has occurred: " + error.message;
 
-  const createData = (FullName, Email, Matricule) => {
-    return { FullName, Email, Matricule };
-  }
+  const createData = (id, FullName, Email, Matricule) => {
+    return { id, FullName, Email, Matricule };
+  };
 
-  let rows = Object.values(data).map(user =>{
-      return (createData(
-      user.FullName,
-      user.Matricule,
-      user.email,
-      [<Button variant="contained"color="error">Delete</Button> ]
-    ))
-  })
+  let rows = data.map((user) => {
+    return createData(
+      user[0],
+      user[1].FullName,
+      user[1].Matricule,
+      user[1].email,
+      [
+        <Button variant="contained" color="primary">
+          Delete
+        </Button>,
+      ]
+    );
+  });
   console.log(rows);
   return (
     <Sidebar>
@@ -73,7 +78,7 @@ export default function ManageUsers() {
                 </Stack>
                 <div>
                   <Button
-                  onClick={()=>(navigate('/Register'))}
+                    onClick={() => navigate("/Register")}
                     startIcon={
                       <SvgIcon fontSize="small">
                         <PlusIcon />
@@ -116,6 +121,10 @@ export default function ManageUsers() {
                             <Button
                               variant="outlined"
                               startIcon={<DeleteIcon />}
+                              onClick={() => {
+                                deleteAccount(row.id);
+                                window.location.reload();
+                              }}
                             >
                               Delete
                             </Button>
@@ -135,5 +144,3 @@ export default function ManageUsers() {
     </Sidebar>
   );
 }
-
-

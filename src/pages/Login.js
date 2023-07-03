@@ -36,7 +36,7 @@ const SendUIDAndNavigate = (Navigate) => {
 function LoginPage() {
   const Navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setpassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSignIn = (e) => {
@@ -48,7 +48,7 @@ function LoginPage() {
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         console.log("User signed in:", userCredential.user);
-        Navigate("/dashboard", {
+        Navigate("/Serverroom", {
           state: { uid: firebase.auth().currentUser.uid },
         });
       })
@@ -94,7 +94,7 @@ function LoginPage() {
             id="password"
             autoComplete="current-password"
             value={password} // Added value prop to bind the password state
-            onChange={(e) => setPassword(e.target.value)} // Added onChange handler to update the password state
+            onChange={(e) => setpassword(e.target.value)} // Added onChange handler to update the password state
           />
           <Button
             type="submit"
