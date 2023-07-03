@@ -5,7 +5,6 @@ import {
   formatData,
   huDataFormatter,
 } from "../data/Areachartdata";
-
 import { Typography, SvgIcon, Avatar } from "@mui/material";
 import { CiTempHigh } from "react-icons/ci";
 import { WiHumidity } from "react-icons/wi";
@@ -19,6 +18,15 @@ import { fetchData } from "../Config/Firebase";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
+function sortByDate(arr) {
+  arr.sort((a, b) => {
+    const dateA = new Date(a[0].split("-").reverse().join("-"));
+    const dateB = new Date(b[0].split("-").reverse().join("-"));
+    return dateA - dateB;
+  });
+  return arr;
+}
+
 function Dashbody({ data }) {
   const {
     isLoading,
@@ -28,11 +36,16 @@ function Dashbody({ data }) {
   } = useQuery({
     queryKey: ["history"],
     queryFn: () =>
-      fetchData(`/Rooms/${data?.RoomName}/History/`).then((res) =>
-        Object.values(res)
-      ),
+      fetchData(`/Rooms/${data?.RoomName}/History/`).then((res) => {
+        console.log("re", Object.values(sortByDate(Object.entries(res))));
+        const sortedData = Object.values(sortByDate(Object.entries(res)));
+        const lastData = sortedData[sortedData.length - 1];
+
+        console.log(Object.values(lastData[1]));
+        return Object.values(lastData[1]);
+      }),
   });
-  !isLoading && console.log("history", Object.values(history[0]));
+  !isLoading && console.log("history", formatData(Object.values(history[0])));
   if (isError) {
     return <div>error</div>;
   }
@@ -132,7 +145,11 @@ function Dashbody({ data }) {
               <div className="mt-4 h-72">
                 {!isLoading && (
                   <AreaChart
-                    data={formatData(Object.values(history[0]), "Temperature")}
+                    data={formatData(history, "Temperature")}
+                    // data={formatData(
+                    //   Object.values(history[history.length - 1]),
+                    //   "Temperature"
+                    // )}
                     index="date"
                     categories={["Temperature"]}
                     colors={["cyan"]}
@@ -147,7 +164,11 @@ function Dashbody({ data }) {
               <div className="mt-4 h-72">
                 {!isLoading && (
                   <AreaChart
-                    data={formatData(Object.values(history[0]), "Humidity")}
+                    data={formatData(history, "Humidity")}
+                    // data={formatData(
+                    //   Object.values(history[history.length - 1]),
+                    //   "Humidity"
+                    // )}
                     index="date"
                     categories={["Humidity"]}
                     colors={["indigo"]}
