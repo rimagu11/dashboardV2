@@ -49,8 +49,8 @@ export default function ManageUsers() {
   let rows = data.map((user) => {
     return createData(
       user[0],
-      user[1].FullName,
-      user[1].Matricule,
+      user[1].name,
+      user[1].matricule,
       user[1].email,
       [
         <Button variant="contained" color="primary">
